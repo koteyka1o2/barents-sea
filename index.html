@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barents sea</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0eee8;
+      --text: #2a2520;
+      --text-mid: #4a4540;
+      --text-light: #9a9590;
+      --facts-bg: #d8d4c0;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sc: 'Cormorant SC', Georgia, serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 0% 20%, rgba(180,200,220,0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 60%, rgba(200,210,190,0.2) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 90%, rgba(210,200,230,0.15) 0%, transparent 40%);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: var(--serif);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 1.1rem 3rem;
+      background: rgba(240,238,232,0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(42,37,32,0.08);
+    }
+
+    .nav-left { justify-self: start; }
+    .nav-right { justify-self: end; }
+
+    nav a {
+      font-family: var(--sc);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: var(--text); }
+
+    .nav-logo {
+      font-family: var(--sc);
+      font-size: 1.05rem;
+      letter-spacing: 0.35em;
+      font-weight: 300;
+      color: var(--text);
+      text-decoration: none;
+      text-align: center;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding-top: 3.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-img-top {
+      width: 40%;
+      max-width: 580px;
+      height: 200px;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .hero-titles {
+      text-align: center;
+      padding: 3rem 2rem 1.5rem;
+    }
+
+    .hero-titles h1 {
+      font-size: clamp(4rem, 9vw, 8rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .hero-titles h2 {
+      font-size: clamp(2.5rem, 5.5vw, 5rem);
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 0.02em;
+      color: var(--text-mid);
+      margin-top: 0.3rem;
+    }
+
+    .ps-note {
+      display: inline-block;
+      border: 1px solid var(--text-mid);
+      padding: 0.5rem 1.8rem;
+      font-family: var(--sc);
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      color: var(--text-mid);
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    /* ─── MAP ─── */
+    .map-section {
+      display: grid;
+      grid-template-columns: 1fr 3fr;
+      gap: 0;
+      width: 100%;
+      height: 260px;
+    }
+
+    .map-mini {
+      background: #b8d4d8;
+      overflow: hidden;
+      position: relative;
+    }
+    .map-mini img { width: 100%; height: 100%; object-fit: cover; }
+
+    .map-main {
+      background: #7ec8d0;
+      overflow: hidden;
+    }
+    .map-main iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      pointer-events: none;
+    }
+
+    /* ─── SECTION TITLE ─── */
+    .section-title {
+      text-align: center;
+      padding: 4rem 2rem 1rem;
+    }
+
+    .section-title h2 {
+      font-size: clamp(3.5rem, 8vw, 7.5rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .section-title h2.italic { font-style: italic; }
+
+    /* ─── ЭКСПОНАТЫ ─── */
+    .exposition { padding: 2rem 0 4rem; }
+
+    .exhibit {
+      padding: 3rem 8vw;
+    }
+
+    /* layout: text LEFT, image RIGHT */
+    .exhibit-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      margin-bottom: 2rem;
+    }
+
+    /* layout: image LEFT, text RIGHT (alternate) */
+    .exhibit-inner.flip {
+      grid-template-columns: 1fr 1fr;
+    }
+    .exhibit-inner.flip .exhibit-text { order: 2; }
+    .exhibit-inner.flip .exhibit-img  { order: 1; }
+
+    .exhibit-number {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .exhibit-name {
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+    }
+
+    .exhibit-desc {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--text-mid);
+    }
+
+    .exhibit-img img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* FACTS BOX */
+    .facts-box {
+      background: var(--facts-bg);
+      padding: 2rem 8vw;
+      margin: 0 0 1rem;
+    }
+
+    .facts-box h3 {
+      font-family: var(--sc);
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-align: center;
+      color: var(--text-mid);
+      margin-bottom: 1rem;
+    }
+
+    .facts-box p {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--text-mid);
+      margin-bottom: 0.4rem;
+    }
+
+    /* ─── GALLERY "ТО ЧТО ИНТЕРЕСНО" ─── */
+    .interesting-label {
+      font-family: var(--sc);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-align: center;
+      color: var(--text-light);
+      padding: 3rem 0 1.5rem;
+    }
+
+    .interesting-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .interesting-card {
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+    }
+
+    .interesting-card img {
+      width: 100%;
+      height: 460px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease;
+    }
+
+    .interesting-card:hover img { transform: scale(1.04); }
+
+    .interesting-card-text {
+      padding: 1.5rem 2rem 2.5rem;
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 0% 50%, rgba(180,200,220,0.2) 0%, transparent 70%);
+    }
+
+    .interesting-card-text p {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-bottom: 0.4rem;
+    }
+
+    .interesting-card-text h3 {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+
+    .interesting-card-text .see-link {
+      font-family: var(--sc);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--text-mid);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+    .interesting-card-text .see-link:hover { color: var(--text); }
+
+    /* ─── FINAL QUOTE ─── */
+    .final-quote {
+      position: relative;
+      width: 100%;
+      height: 440px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .final-quote img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .final-quote-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.18);
+    }
+
+    .final-quote blockquote {
+      position: relative;
+      z-index: 2;
+      font-size: clamp(1rem, 2.2vw, 1.6rem);
+      font-style: italic;
+      font-weight: 300;
+      color: #fff;
+      text-align: center;
+      max-width: 800px;
+      padding: 0 3rem;
+      line-height: 1.5;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      text-align: center;
+      padding: 3.5rem 2rem;
+      background: var(--bg);
+    }
+
+    footer .footer-name {
+      font-family: var(--sc);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--text-mid);
+      margin-bottom: 0.5rem;
+    }
+
+    footer .footer-sub {
+      font-size: 0.7rem;
+      color: var(--text-light);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.2rem; }
+      .exhibit-inner, .exhibit-inner.flip { grid-template-columns: 1fr; }
+      .exhibit-inner.flip .exhibit-text,
+      .exhibit-inner.flip .exhibit-img { order: unset; }
+      .interesting-grid { grid-template-columns: 1fr; }
+      .hero-img-top { width: 80%; height: 130px; }
+      .map-section { grid-template-columns: 1fr; height: auto; }
+      .map-mini { height: 180px; }
+      .map-main { height: 260px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left"><a href="index.html" class="active">Главная</a></div>
+  <a href="index.html" class="nav-logo">B a r e n t s &nbsp; s e a</a>
+  <div class="nav-right"><a href="about.html">Об авторе</a></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-img-top" src="images/1000-76dcaae2123222f9ee5993d947b8ef9f.png" alt="Море">
+  <div class="hero-titles">
+    <h1>Баренцево море</h1>
+    <h2>На севере-жить</h2>
+  </div>
+  <div class="ps-note">PS: СЛЕДУЙТЕ ЦИФРАМ ОКОЛО ЭКСПАНАТОВ!</div>
+</section>
+
+<!-- MAP -->
+<div class="map-section">
+  <div class="map-mini">
+    <img src="images/1000-8feff206369918048134046ff0f5f41e.png" alt="Карта мини">
+  </div>
+  <div class="map-main">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d5000000!2d40!3d75!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sru!4v1700000000000!5m2!1sru!2sru"
+      allowfullscreen loading="lazy">
+    </iframe>
+  </div>
+</div>
+
+<!-- ЭКСПОЗИЦИЯ -->
+<div class="section-title">
+  <h2>Экспозиция</h2>
+  <h2 class="italic">Баренцева Моря</h2>
+</div>
+
+<div class="exposition">
+
+  <!-- ЭКСПОНАТ 1 — Морской ёж -->
+  <div class="exhibit">
+    <div class="exhibit-inner">
+      <div class="exhibit-text">
+        <div class="exhibit-number">Экспонат №1</div>
+        <div class="exhibit-name">Морской еж Echinus esculentus</div>
+        <p class="exhibit-desc">Echinus esculentus (европейский съедобный или обыкновенный морской ёж) обитает в прибрежных районах Западной Европы. Также его можно встретить в Атлантическом океане у берегов Европейского континента — от Испании до Шпицбергена.<br><br>
+        Тело морского ежа «собрано» из отдельных, неподвижно закрепленных известковых пластин, образующих шаровидный панцирь, который усеян стройными рядами игл. При близком знакомстве можно заметить, что под длинными жесткими иглами прячутся подвижные трубочки-присоски — так называемые педициллярии, похожие на гибкие стебельки. Они служат для очистки поверхности тела от наростов, водорослей и инородных организмов.</p>
+      </div>
+      <div class="exhibit-img">
+        <img src="images/1000-39e9cb2fbd7edf66653c3f20820148df.jpg" alt="Морской ёж">
+      </div>
+    </div>
+  </div>
+
+  <div class="facts-box">
+    <h3>ИНТЕРЕСНЫЕ ФАКТЫ</h3>
+    <p>1) Каннибализм и рацион: Морские ежи всеядны и не брезгуют поедать своих же сородичей.</p>
+    <p>2) Симбиоз с рыбами: Мелкие рыбы часто прячутся между иглами ежей, получая защиту, а взамен очищают их от паразитов.</p>
+    <p>3) Икра морского ежа содержит колоссальное количество витаминов (в 20 раз больше, чем в женьшене), микроэлементов и омега-3 жирных кислот, что делает ее ценным деликатесом.</p>
+  </div>
+
+  <!-- ЭКСПОНАТ 2 — Камчатский краб -->
+  <div class="exhibit">
+    <div class="exhibit-inner flip">
+      <div class="exhibit-text">
+        <div class="exhibit-number">Экспонат №2</div>
+        <div class="exhibit-name">Камчатский краб</div>
+        <p class="exhibit-desc">Камчатский краб (Paralithodes camtschaticus), известный в мире как «королевский краб», занимает особое место среди морских обитателей. Этот вид, относящийся к семейству крабоидов (Lithodidae), формально не является настоящим крабом, а представляет собой неполнохвостого рака, близкого к ракам-отшельникам. Его внушительные размеры — до 1,8 метра в размахе ног и вес, достигающий 12 килограммов, — сделали его легендой северных морей.</p>
+      </div>
+      <div class="exhibit-img">
+        <img src="images/1000-76dcaae2123222f9ee5993d947b8ef9f.png" alt="Камчатский краб">
+      </div>
+    </div>
+  </div>
+
+  <div class="facts-box">
+    <h3>Интересные факты</h3>
+    <p>1) Заселение камчатского краба в Баренцево море было одним из проектов советской рыбохозяйственной отрасли 1930–1960-х годов. В 1932 году заместитель начальника «Главрыбы» А. М. Головский предложил переселить камчатского краба на север. Первые попытки перевозки в 1931–1935 годах оказались провальными. В 1960 году первая партия крабов была успешно доставлена самолётом в Мурманск, а в 1961 году в Баренцево море выпустили около 1,6 миллиона личинок. С 1961 по 1969 годы туда завезли около 3 тысяч взрослых особей, 10 тысяч молоди и миллионы личинок. К 1974 году первые крабы начали попадаться в Кольском заливе, а к 1977 году их заметили у берегов Норвегии, где их прозвали «сталинскими крабами».</p>
+    <p>2) «Некраб»: Биологически камчатский краб — это не краб, а рак-отшельник (неполнохвостый рак), у которого всего 8 ходильных ног, а не 10, как у настоящих крабов.</p>
+    <p>3) Истинный завоеватель: В Баренцевом море у него почти нет естественных врагов, кроме человека, что способствовало взрывному росту популяции.</p>
+  </div>
+
+  <!-- ЭКСПОНАТ 3 — Морские гребешки + балянусы -->
+  <div class="exhibit">
+    <div class="exhibit-inner">
+      <div class="exhibit-text">
+        <div class="exhibit-number">Экспонат №3</div>
+        <div class="exhibit-name">Морские гребешки</div>
+        <p class="exhibit-desc">Морские гребешки — это двустворчатые моллюски, способные перемещаться даже на большой глубине с помощью собственных створок. Они так часто ими «хлопают», что создается реактивная тяга и моллюск передвигается с места на место.<br><br>
+        Обитающий в морях и океанах, морской гребешок предпочитает скалистые и песчаные донные грунты, где он крепко прикрепляется к подложке с помощью своих веерообразных раковин.</p>
+      </div>
+      <div class="exhibit-img">
+        <img src="images/1000-8feff206369918048134046ff0f5f41e.png" alt="Морские гребешки">
+      </div>
+    </div>
+  </div>
+
+  <div class="facts-box">
+    <h3>Интересные факты</h3>
+    <p>1) Удивительно, но морские гребешки — это не только полезный морепродукт, но и культурная ценность. Ещё в античные времена гребешки были символом Афродиты-Венеры. На знаменитой картине Боттичелли «Рождение Венеры» изображена именно раковина большого гребешка. Стилизованное изображение морского гребешка вы можете увидеть на логотипе крупнейшей нефтегазовой компании Royal Dutch Shell.</p>
+    <p>2) По краям мантии гребешка расположено около 100 маленьких голубых глаз, которые отлично видят в темноте.</p>
+    <p>3) В прошлом раковины гребешков служили разменной монетой в некоторых странах.</p>
+  </div>
+
+  <!-- Barnacles доп. блок внутри экспоната 3 -->
+  <div class="exhibit">
+    <div class="exhibit-inner flip">
+      <div class="exhibit-text">
+        <div class="exhibit-name" style="font-size:1.3rem; margin-bottom:1rem;">На экспонате №3 вы можете увидеть Barnacles (усоногие раки, балянусы или, как их ещё называют, морские желуди)</div>
+        <p class="exhibit-desc">Тело морских желудей целиком находится внутри твердой известковой раковины, состоящей из пластинок. Часть их неподвижно соединена друг с другом и составляет стенки домика, другие образуют «крышу». На дне домика спиной вниз лежит рачок, выставив обращённый кверху рот. Раздвигая пластинки «крыши», он время от времени просовывает в образовавшуюся щель грудные ножки. Шевеля ими, загоняет внутрь домика воду и мелких планктонных животных, которыми питается.<br><br>
+        Морские желуди ведут сидячий образ жизни, прикрепляясь к всевозможным подводным предметам — камням, сваям, днищам судов.</p>
+      </div>
+      <div class="exhibit-img">
+        <img src="images/1000-53fcb784290d89e485aebc8b0cf3ad34.jpg" alt="Балянусы">
+      </div>
+    </div>
+  </div>
+
+  <div class="facts-box">
+    <h3>Интересные факты</h3>
+    <p>1) Чарлз Дарвин посвятил изучению балянусов более восьми лет своей жизни (примерно с 1846 по 1854 год). Этот период стал ключевым этапом в его научной карьере перед публикацией «Происхождения видов».</p>
+    <p>2) Балянусы вырабатывают специальный белковый цемент, который настолько прочен, что считается одним из самых сильных биологических клеев в мире. Он не растворяется в воде и работает даже на тефлоне.</p>
+    <p>3) Цусимская трагедия: Во время Русско-японской войны балянусы сыграли роковую роль — из-за долгого перехода корабли русской эскадры обросли ими, что снизило скорость судов и стало одной из причин поражения.</p>
+  </div>
+
+  <!-- ЭКСПОНАТ 4 — Мидии -->
+  <div class="exhibit">
+    <div class="exhibit-inner">
+      <div class="exhibit-text">
+        <div class="exhibit-number">Экспонат №4</div>
+        <div class="exhibit-name">Мидии</div>
+        <p class="exhibit-desc">Мидии — это морские двустворчатые моллюски (семейство Mytilidae), ведущие прикреплённый образ жизни. Они фильтруют воду, питаясь планктоном, и живут сплошными колониями (банками) на скалах, камнях и искусственных субстратах. Эти беспозвоночные широко распространены, активно выращиваются на марикультурных фермах и являются ценным пищевым продуктом, богатым белком.</p>
+      </div>
+      <div class="exhibit-img">
+        <img src="images/1000-ee4c92a1627f0a681881c25805a663c2.jpg" alt="Мидии">
+      </div>
+    </div>
+  </div>
+
+  <div class="facts-box">
+    <h3>Интересные факты</h3>
+    <p>1) Символ любви в Японии: Из-за крепко закрытых створок, которые сложно открыть, мидии в Японии считаются символом супружеской верности, их часто подают на свадьбах.</p>
+    <p>2) В ресторанах Кувейта не подают мидии в закрытом виде. Всё потому, что внутри раковины можно обнаружить жемчужину. В этой стране покупать закрытые раковины — принимать участие в азартных играх.</p>
+    <p>3) Некоторые виды мидий могут жить десятилетиями. В холодных водах северного полушария найдены мидии, которым более 100 лет.</p>
+  </div>
+
+</div><!-- /exposition -->
+
+<!-- ТО, ЧТО ИНТЕРЕСНО -->
+<p class="interesting-label">ТО, ЧТО ИНТЕРЕСНО</p>
+
+<div class="interesting-grid">
+  <div class="interesting-card">
+    <img src="images/1000-39e9cb2fbd7edf66653c3f20820148df.jpg" alt="Животный мир">
+    <div class="interesting-card-text">
+      <p>А вы когда-нибудь видели, как кит выныривает из воды?</p>
+      <h3>Животный мир</h3>
+      <a href="wildlife.html" class="see-link">СМОТРЕТЬ ▸</a>
+    </div>
+  </div>
+  <div class="interesting-card">
+    <img src="images/1000-5988981334ba191191c57afc4ccefbbd.jpg" alt="Маршруты">
+    <div class="interesting-card-text">
+      <p>Как же все это увидеть? Где?</p>
+      <h3>Маршруты</h3>
+      <a href="routes.html" class="see-link">СМОТРЕТЬ ▸</a>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL QUOTE -->
+<div class="final-quote">
+  <img src="images/2000-d6e9bb7459c5cdb4f240399efa928379.jpg" alt="Баренцево море">
+  <div class="final-quote-overlay"></div>
+  <blockquote>Баренцево море — место, где стрелка часов замирает и ты остаёшься наедине с собой, пением китов и бескрайними горами</blockquote>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-name">LENA ARKHIPKOVA</p>
+</footer>
+
+</body>
+</html>

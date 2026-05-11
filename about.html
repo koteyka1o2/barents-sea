@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Об авторе — Barents sea</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+SC:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0eee8;
+      --text: #2a2520;
+      --text-mid: #4a4540;
+      --text-light: #9a9590;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sc: 'Cormorant SC', Georgia, serif;
+    }
+
+    body {
+      background: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 0% 20%, rgba(180,200,220,0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 60%, rgba(200,210,190,0.2) 0%, transparent 45%);
+      background-attachment: fixed;
+      color: var(--text);
+      font-family: var(--serif);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 1.1rem 3rem;
+      background: rgba(240,238,232,0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(42,37,32,0.08);
+    }
+
+    .nav-left { justify-self: start; }
+    .nav-right { justify-self: end; }
+
+    nav a {
+      font-family: var(--sc);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--text); }
+    nav a.active { color: var(--text); }
+
+    .nav-logo {
+      font-family: var(--sc);
+      font-size: 1.05rem;
+      letter-spacing: 0.35em;
+      font-weight: 300;
+      color: var(--text);
+      text-decoration: none;
+      text-align: center;
+    }
+
+    /* PAGE CONTENT */
+    .page-wrap {
+      padding-top: 4.5rem;
+    }
+
+    /* TOP LABEL */
+    .about-label {
+      font-family: var(--sc);
+      font-size: 0.62rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      text-align: center;
+      padding: 3rem 0 0;
+    }
+
+    /* SPLIT LAYOUT */
+    .about-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 80vh;
+      margin-top: 2rem;
+    }
+
+    .about-photo {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-photo img {
+      width: 100%;
+      height: 100%;
+      min-height: 600px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    .about-content {
+      padding: 4rem 7vw 4rem 5vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .about-name-ru {
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 2.5rem;
+    }
+
+    .about-name-ru em {
+      display: block;
+      font-style: italic;
+      font-size: 0.85em;
+    }
+
+    .about-text-body {
+      font-size: clamp(0.9rem, 1.1vw, 1.05rem);
+      line-height: 1.85;
+      color: var(--text-mid);
+    }
+
+    .about-text-body p { margin-bottom: 1.4rem; }
+    .about-text-body p:last-child { margin-bottom: 0; }
+
+    /* NAME EN at bottom */
+    .about-name-en {
+      margin-top: 3rem;
+      font-family: var(--sc);
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      color: var(--text-light);
+    }
+
+    /* DIVIDER */
+    .divider {
+      height: 1px;
+      background: rgba(42,37,32,0.1);
+      margin: 0 8vw;
+    }
+
+    /* QUOTE SECTION */
+    .project-section {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 4rem;
+      padding: 4rem 8vw 6rem;
+      align-items: start;
+    }
+
+    .project-label {
+      font-family: var(--sc);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      padding-top: 0.3rem;
+    }
+
+    .project-quote {
+      font-size: clamp(1.1rem, 2vw, 1.6rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--text-mid);
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 3rem;
+      border-top: 1px solid rgba(42,37,32,0.08);
+    }
+
+    footer p {
+      font-family: var(--sc);
+      font-size: 0.65rem;
+      letter-spacing: 0.28em;
+      color: var(--text-light);
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.2rem; }
+      .about-split { grid-template-columns: 1fr; }
+      .about-photo img { min-height: 65vw; }
+      .about-content { padding: 3rem 6vw; }
+      .project-section { grid-template-columns: 1fr; gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left"><a href="index.html">Главная</a></div>
+  <a href="index.html" class="nav-logo">B a r e n t s &nbsp; s e a</a>
+  <div class="nav-right"><a href="about.html" class="active">Об авторе</a></div>
+</nav>
+
+<div class="page-wrap">
+
+  <p class="about-label">Об авторе</p>
+
+  <div class="about-split">
+    <div class="about-photo">
+      <img src="images/1000-9037175761bbe6f79b0217dc8549e75e.jpeg" alt="Лена Архипкова">
+    </div>
+    <div class="about-content">
+      <h1 class="about-name-ru">
+        Лена<br>
+        <em>Архипкова</em>
+      </h1>
+      <div class="about-text-body">
+        <p>Впервые я побывала на севере в 2023 году, когда родители решили взять меня с собой на рыбалку. Остановились в Лиинахамари, прибрежном городке. Это было для меня чем-то новым: огромные сопки, карликовые деревья и, конечно, само море.</p>
+        <p>Да, это не тёплые края, где ты можешь ходить в футболке и шортах, но именно тут ты ощущаешь настоящую свободу и северный дух страны.</p>
+        <p>С того момента мы ездили туда каждый год, и с каждым годом Баренцево море открывало нам новые виды и эмоции. В один сезон нам посчастливилось увидеть китов, проплывающих вдоль берега — это было невероятно интересно и впечатляюще.</p>
+        <p>Данный проект я сделала для того, чтобы поделиться своими эмоциями и показать, что север России — это не только горы, но и множество интересных мест и ощущений.</p>
+      </div>
+      <div class="about-name-en">Lena Arkhipkova</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="project-section">
+    <p class="project-label">О проекте</p>
+    <p class="project-quote">
+      Баренцево море — место, где стрелка часов замирает и ты остаёшься наедине с собой, пением китов и бескрайними горами.
+    </p>
+  </div>
+
+</div>
+
+<footer>
+  <p>LENA ARKHIPKOVA</p>
+</footer>
+
+</body>
+</html>
